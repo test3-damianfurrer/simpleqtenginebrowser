@@ -6,4 +6,10 @@ You could for example use a relational database to keep track of categories, dom
 
 No need to have 20 youtube tabs open, just query the youtube domain for videos you wanted to watch, when you have time again.
 
-Todo: Context Menu to exit with the url of a selected link.
+~~Todo: Context Menu to exit with the url of a selected link.~~
+Further:
+1. add the other page actions, like refresh, back and forth
+1. maybe support more advanced features like download but maybe also not.
+1. maybe make a version reading a page from stdin
+1. optimize
+
