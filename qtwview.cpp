@@ -17,7 +17,7 @@ void MainWindow::customContextMenu(const QPoint &pos){
 }
 
 QUrl MainWindow::url(){
-	return view->url();
+	return view->returnLink(); //->url();
 }
 
 void MainWindow::loadFinished()

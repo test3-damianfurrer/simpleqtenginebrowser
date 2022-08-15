@@ -1,7 +1,6 @@
 #include "qtwengineview.h"
 #include <QApplication>
-
-//#include <QWebEngineView>
+#include <QMenu>
 
 WebEngineView::WebEngineView(QWidget *parent = Q_NULLPTR)
 {
@@ -16,12 +15,32 @@ WebEngineView::WebEngineView(QWidget *parent = Q_NULLPTR)
     addAction(exit);
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, &WebEngineView::customContextMenuRequested, this, &WebEngineView::showContextMenu);
+    connect(this, &WebEngineView::urlChanged, this, &WebEngineView::updateLink);
+    connect(page(), &QWebEnginePage::linkHovered, this, &WebEngineView::detectedLink);
 }
+
+void WebEngineView::updateLink(const QUrl &url){
+    linkurl=url.toString();
+}
+
+QString WebEngineView::returnLink(){
+    updateLink(url());
+    return linkurl;
+}
+
+void WebEngineView::detectedLink(QString link){
+    linkurl = link;
+}
+
 void WebEngineView::ExitAction(){
-	QCoreApplication::exit(0);
+    QCoreApplication::exit(0);
 }
 void WebEngineView::showContextMenu(const QPoint &pos){
-ExitAction();
+    QMenu *contextMenu = new QMenu();
+    QAction *return_link = new QAction(tr("Return Link"));
+    connect(return_link, &QAction::triggered, this, [this] {setUrl(QUrl(linkurl));ExitAction();});
+    contextMenu->addAction(return_link);
+    contextMenu->exec(this->mapToGlobal(pos));
 }
 
 WebEngineView::~WebEngineView()
