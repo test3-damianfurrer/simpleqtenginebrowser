@@ -4,6 +4,7 @@
 #include <QWebEngineSettings>
 #include <QWebEngineView>
 #include <QAction>
+#include <QWebEngineFullScreenRequest>
 
 class WebEngineView : public QWebEngineView
 {
@@ -17,6 +18,7 @@ protected:
     void detectedLink(QString link);
     void showContextMenu(const QPoint &pos);
     void ExitAction();
+    void fullscrnReq(QWebEngineFullScreenRequest req);
     QAction *exit = new QAction();
     QString linkurl = "";
 };

@@ -17,6 +17,11 @@ WebEngineView::WebEngineView(QWidget *parent = Q_NULLPTR)
     connect(this, &WebEngineView::customContextMenuRequested, this, &WebEngineView::showContextMenu);
     connect(this, &WebEngineView::urlChanged, this, &WebEngineView::updateLink);
     connect(page(), &QWebEnginePage::linkHovered, this, &WebEngineView::detectedLink);
+    connect(page(), &QWebEnginePage::fullScreenRequested, this, &WebEngineView::fullscrnReq);
+}
+
+void WebEngineView::fullscrnReq(QWebEngineFullScreenRequest req){
+    req.accept();
 }
 
 void WebEngineView::updateLink(const QUrl &url){
@@ -36,6 +41,8 @@ void WebEngineView::ExitAction(){
     QCoreApplication::exit(0);
 }
 void WebEngineView::showContextMenu(const QPoint &pos){
+    if(linkurl == "")
+	return;
     QMenu *contextMenu = new QMenu();
     QAction *return_link = new QAction(tr("Return Link"));
     connect(return_link, &QAction::triggered, this, [this] {setUrl(QUrl(linkurl));ExitAction();});
