@@ -12,6 +12,8 @@ public:
     MainWindow(const QUrl& url);
     QUrl url();
     QString title();
+    void setUAString(QString userAgent);
+    void setAllPaths(QString currpath);
     void customContextMenu(const QPoint &pos);
     ~MainWindow();
 

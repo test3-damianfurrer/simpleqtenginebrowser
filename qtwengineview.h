@@ -12,6 +12,8 @@ class WebEngineView : public QWebEngineView
 public:
     WebEngineView(QWidget *parent);
     QString returnLink();
+    void setUAString(QString userAgent);
+    void setAllPaths(QString);
     ~WebEngineView();
 protected:
     void updateLink(const QUrl &url);

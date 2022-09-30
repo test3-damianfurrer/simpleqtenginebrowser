@@ -1,6 +1,7 @@
 #include "qtwengineview.h"
 #include <QApplication>
 #include <QMenu>
+#include <QWebEngineProfile>
 
 WebEngineView::WebEngineView(QWidget *parent = Q_NULLPTR)
 {
@@ -18,6 +19,21 @@ WebEngineView::WebEngineView(QWidget *parent = Q_NULLPTR)
     connect(this, &WebEngineView::urlChanged, this, &WebEngineView::updateLink);
     connect(page(), &QWebEnginePage::linkHovered, this, &WebEngineView::detectedLink);
     connect(page(), &QWebEnginePage::fullScreenRequested, this, &WebEngineView::fullscrnReq);
+}
+
+void WebEngineView::setUAString(QString userAgent){
+    QWebEngineProfile * prf = page()->profile();
+    prf->setHttpUserAgent(userAgent);
+}
+
+void WebEngineView::setAllPaths(QString currpath){
+    QWebEngineProfile * prf = page()->profile();
+    prf->setCachePath(currpath);
+    prf->setDownloadPath(currpath);
+    prf->setPersistentStoragePath(currpath);
+    //prf->setCachePath(currpath);
+    //cookie store and certificate store can't be changed. They'd probbably have to be exported/imported specifically
+    //despite this cookies seem to be stored locally in persistent Storage Path
 }
 
 void WebEngineView::fullscrnReq(QWebEngineFullScreenRequest req){

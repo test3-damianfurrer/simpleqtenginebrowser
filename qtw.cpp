@@ -2,6 +2,7 @@
 #include "qtwengineview.h"
 #include <QApplication>
 #include <QWebEngineView>
+#include <unistd.h>
 
 QTextStream& qStdOut()
 {
@@ -18,6 +19,8 @@ void test(){
 
 int main(int argc, char *argv[])
 {
+    QString pwd=QString(get_current_dir_name()); //curr dir
+
     QCoreApplication::setOrganizationName("QtNoobs");
     QCoreApplication::setApplicationName("Qtw");
     QCoreApplication::setApplicationVersion("v0.0.1");
@@ -29,6 +32,8 @@ int main(int argc, char *argv[])
 	return 1;
     QString str (QCoreApplication::arguments().at(1));
     MainWindow *mw = new MainWindow(QUrl(str));
+    mw->setUAString(QString("Mozilla/5.0 (Linux; U; Android 4.4.2; en-us; SCH-I535 Build/KOT49H) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"));
+    mw->setAllPaths(pwd);
     mw->show();
 
     int ret=0;
@@ -37,5 +42,10 @@ int main(int argc, char *argv[])
     qStdOut() << "\n";
     (*mw).~MainWindow();
 
+//    qStdOut() << "PWD: ";
+//    qStdOut() << pwd;
+//    qStdOut() <<  "\n";
+
+//    printf("Current working dir: %s\n", get_current_dir_name());
     return ret;
 }

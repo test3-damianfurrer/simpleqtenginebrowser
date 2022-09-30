@@ -14,6 +14,14 @@ MainWindow::MainWindow(const QUrl& url)
     setCentralWidget(view);
 }
 
+void MainWindow::setUAString(QString userAgent){
+	view->setUAString(userAgent);
+}
+
+void MainWindow::setAllPaths(QString currpath){
+	view->setAllPaths(currpath);
+}
+
 QUrl MainWindow::url(){
     return view->returnLink();
 }
@@ -28,7 +36,7 @@ void MainWindow::adjustTitle()
     else if (progress == 0)
 	setWindowTitle(QStringLiteral("Loading"));
     else
-        setWindowTitle(QStringLiteral("%1 (%2%)").arg(progress).arg(view->title()));
+        setWindowTitle(QStringLiteral("%1% (%2)").arg(progress).arg(view->title()));
 }
 
 void MainWindow::urlChanged(){
