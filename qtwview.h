@@ -9,7 +9,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(const QUrl& url);
+    MainWindow(const QUrl& url, QString *pwd);
     QUrl url();
     QString title();
     void setUAString(QString userAgent);

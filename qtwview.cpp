@@ -2,10 +2,10 @@
 #include "qtwengineview.h"
 #include <QApplication>
 
-MainWindow::MainWindow(const QUrl& url)
+MainWindow::MainWindow(const QUrl& url, QString *pwd)
 {
     progress = 0;
-    view = new WebEngineView(this);
+    view = new WebEngineView(pwd,this);
     connect(view, &WebEngineView::urlChanged, this, &MainWindow::urlChanged);
     connect(view, &WebEngineView::titleChanged, this, &MainWindow::urlChanged);
     connect(view, &WebEngineView::loadFinished, this, &MainWindow::finishLoading);
@@ -18,9 +18,9 @@ void MainWindow::setUAString(QString userAgent){
 	view->setUAString(userAgent);
 }
 
-void MainWindow::setAllPaths(QString currpath){
-	view->setAllPaths(currpath);
-}
+//void MainWindow::setAllPaths(QString currpath){
+	//view->setAllPaths(currpath);
+//}
 
 QUrl MainWindow::url(){
     return view->returnLink();

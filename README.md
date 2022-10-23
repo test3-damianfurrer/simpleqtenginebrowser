@@ -13,3 +13,8 @@ Further:
 1. maybe make a version reading a page from stdin
 1. optimize
 
+#Important
+Now, the entire profile path is set to the current working directory.
+Link /home as home in ~/.local/share/QtNoobs/Qtw-Desktop/QtWebEngine.
+This way your profile data will be written into the subfolder profile in your working directory.
+If you do not create this symlink, the subfolder structure will be created inside of the .local folder.

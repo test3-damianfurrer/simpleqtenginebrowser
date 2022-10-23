@@ -3,15 +3,21 @@
 #include <QMenu>
 #include <QWebEngineProfile>
 
-WebEngineView::WebEngineView(QWidget *parent = Q_NULLPTR)
+WebEngineView::WebEngineView(QString *pwd, QWidget *parent = Q_NULLPTR)
 {
     exit->setShortcut(Qt::Key_Escape);
-    setPage(new QWebEnginePage());
+    //setPage(new QWebEnginePage(new QWebEngineProfile(QString("/home/damian/source-code/simpleqtenginebrowser-desktop/test/profile2"))));
+    QString profilepath=*pwd;
+    profilepath+="/profile";
+//    setPage(new QWebEnginePage(new QWebEngineProfile(*pwd)));
+    setPage(new QWebEnginePage(new QWebEngineProfile(profilepath)));
     settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
     settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-    settings()->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows, false);
+    settings()->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows, true);
+//    settings()->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows, false);
     settings()->setAttribute(QWebEngineSettings::WebGLEnabled, true);
     settings()->setAttribute(QWebEngineSettings::Accelerated2dCanvasEnabled, true);
+    this->setAllPaths(*pwd);
     connect(exit, &QAction::triggered, this, &WebEngineView::ExitAction);
     addAction(exit);
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -30,7 +36,7 @@ void WebEngineView::setAllPaths(QString currpath){
     QWebEngineProfile * prf = page()->profile();
     prf->setCachePath(currpath);
     prf->setDownloadPath(currpath);
-    prf->setPersistentStoragePath(currpath);
+//    prf->setPersistentStoragePath(currpath);
     //prf->setCachePath(currpath);
     //cookie store and certificate store can't be changed. They'd probbably have to be exported/imported specifically
     //despite this cookies seem to be stored locally in persistent Storage Path

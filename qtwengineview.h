@@ -10,7 +10,7 @@ class WebEngineView : public QWebEngineView
 {
     Q_OBJECT
 public:
-    WebEngineView(QWidget *parent);
+    WebEngineView(QString *pwd, QWidget *parent);
     QString returnLink();
     void setUAString(QString userAgent);
     void setAllPaths(QString);
