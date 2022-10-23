@@ -18,10 +18,6 @@ void MainWindow::setUAString(QString userAgent){
 	view->setUAString(userAgent);
 }
 
-//void MainWindow::setAllPaths(QString currpath){
-	//view->setAllPaths(currpath);
-//}
-
 QUrl MainWindow::url(){
     return view->returnLink();
 }
@@ -40,7 +36,6 @@ void MainWindow::adjustTitle()
 }
 
 void MainWindow::urlChanged(){
-    //progress = 0;
     adjustTitle();
 }
 
