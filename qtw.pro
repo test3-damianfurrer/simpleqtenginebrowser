@@ -3,7 +3,7 @@ QT       += location webenginewidgets webengine multimedia
 
 greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
 
-TARGET = qtw
+TARGET = qtw-mobile
 TEMPLATE = app
 
 target.path = /usr/local/bin/
