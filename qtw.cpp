@@ -54,6 +54,11 @@ int main(int argc, char *argv[])
     QCommandLineOption proxySocks5Option("socks5", QCoreApplication::translate("main", "Use socks5 Proxy type instead of http"));
     parser.addOption(proxySocks5Option);
 
+    QCommandLineOption noJSOption("nojs", QCoreApplication::translate("main", "Don't use Javascript"));
+    parser.addOption(noJSOption);
+    QCommandLineOption noScrollOption("noscroll", QCoreApplication::translate("main", "Don't show Scroll Bars"));
+    parser.addOption(noScrollOption);
+
 
 
     parser.process(app);
@@ -91,7 +96,9 @@ int main(int argc, char *argv[])
 	QNetworkProxy::setApplicationProxy(proxy);
     }
 
-    MainWindow *mw = new MainWindow(QUrl(str),&pwd);
+    bool js = !parser.isSet(noJSOption);
+    bool scrollbar = !parser.isSet(noScrollOption);
+    MainWindow *mw = new MainWindow(QUrl(str),js,scrollbar,&pwd);
     mw->setUAString(customUA);
     mw->show();
 

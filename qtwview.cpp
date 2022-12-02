@@ -2,10 +2,10 @@
 #include "qtwengineview.h"
 #include <QApplication>
 
-MainWindow::MainWindow(const QUrl& url, QString *pwd)
+MainWindow::MainWindow(const QUrl& url, bool js, bool scrollbar, QString *pwd)
 {
     progress = 0;
-    view = new WebEngineView(pwd,this);
+    view = new WebEngineView(pwd,js,scrollbar,this);
     connect(view, &WebEngineView::urlChanged, this, &MainWindow::urlChanged);
     connect(view, &WebEngineView::titleChanged, this, &MainWindow::urlChanged);
     connect(view, &WebEngineView::loadFinished, this, &MainWindow::finishLoading);

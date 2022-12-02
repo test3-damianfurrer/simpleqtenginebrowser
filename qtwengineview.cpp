@@ -4,7 +4,7 @@
 #include <QWebEngineProfile>
 #include <QDesktopServices>
 
-WebEngineView::WebEngineView(QString *pwd, QWidget *parent = Q_NULLPTR)
+WebEngineView::WebEngineView(QString *pwd, bool js, bool scrollbar, QWidget *parent = Q_NULLPTR)
 {
     exit->setShortcut(Qt::Key_Escape);
     QString profilepath=*pwd;
@@ -16,14 +16,14 @@ WebEngineView::WebEngineView(QString *pwd, QWidget *parent = Q_NULLPTR)
 //--new
     settings()->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
     settings()->setAttribute(QWebEngineSettings::JavascriptCanPaste, true); //depends on^
-    settings()->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
+    settings()->setAttribute(QWebEngineSettings::JavascriptEnabled, js);
     settings()->setAttribute(QWebEngineSettings::SpatialNavigationEnabled, true);
     settings()->setAttribute(QWebEngineSettings::ScrollAnimatorEnabled, true);
     settings()->setAttribute(QWebEngineSettings::TouchIconsEnabled, true); //test
     //settings()->setAttribute(QWebEngineSettings::AllowRunningInsecureContent, true); default false, https everywhere on https pages
     //settings()->setAttribute(QWebEngineSettings::AllowGeolocationOnInsecureOrigins, false); //default
     settings()->setAttribute(QWebEngineSettings::AllowWindowActivationFromJavaScript, true);
-    settings()->setAttribute(QWebEngineSettings::ShowScrollBars, true);
+    settings()->setAttribute(QWebEngineSettings::ShowScrollBars, scrollbar);
     settings()->setAttribute(QWebEngineSettings::PlaybackRequiresUserGesture, false); //default true, like a mobile browser
     //settings()->setAttribute(QWebEngineSettings::WebRTCPublicInterfacesOnly, false); //default, true is more secure
     settings()->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true); //default disabled
