@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QWebEngineView>
 #include <QCommandLineParser>
+#include <QNetworkProxy>
 #include <unistd.h>
 
 QTextStream& qStdOut()
@@ -40,21 +41,36 @@ int main(int argc, char *argv[])
     parser.addOption(desktopUAOption);
     QCommandLineOption customUAOption("u", QCoreApplication::translate("main", "Use custom <User Agent>"),QCoreApplication::translate("main", "User Agent"));
     parser.addOption(customUAOption);
+
+
+    QCommandLineOption proxyOption("p", QCoreApplication::translate("main", "Use Proxy <proxy>"),QCoreApplication::translate("main", "proxy"));
+    parser.addOption(proxyOption);
+    QCommandLineOption proxyPortOption("o", QCoreApplication::translate("main", "Use Proxy Port <port>"),QCoreApplication::translate("main", "port"));
+    parser.addOption(proxyPortOption);
+    QCommandLineOption proxyUserOption("proxy-user", QCoreApplication::translate("main", "Use Proxy Auth Username <user>"),QCoreApplication::translate("main", "user"));
+    parser.addOption(proxyUserOption);
+    QCommandLineOption proxyPassOption("proxy-pass", QCoreApplication::translate("main", "Use Proxy Auth Password <pass>"),QCoreApplication::translate("main", "pass"));
+    parser.addOption(proxyPassOption);
+    QCommandLineOption proxySocks5Option("socks5", QCoreApplication::translate("main", "Use socks5 Proxy type instead of http"));
+    parser.addOption(proxySocks5Option);
+
+
+
     parser.process(app);
     const QStringList args = parser.positionalArguments();
     QString str = args.at(0);
-    bool mobileUA = parser.isSet(mobileUAOption);
-    bool desktopUA = parser.isSet(desktopUAOption);
+//    bool mobileUA = parser.isSet(mobileUAOption);
+//    bool desktopUA = parser.isSet(desktopUAOption);
 //    bool bcustUA = parser.isSet(customUAOption); //not required, but possible
     QString customUA = parser.value(customUAOption);
 /*    if(bcustUA){
 	qStdOut() << "custom UA set\n";
     } */
     if(customUA==""){
-        if(mobileUA){
+        if(parser.isSet(mobileUAOption)){
         //    qStdOut() << "mobile UA set\n";
 	    customUA = QString("Mozilla/5.0 (Linux; U; Android 4.4.2; en-us; SCH-I535 Build/KOT49H) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30");
-        } else if(desktopUA){
+        } else if(parser.isSet(desktopUAOption)){
 	  //  qStdOut() << "desktop UA set\n";
             customUA = QString("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 OPR/91.0.4516.77");
         } else{
@@ -68,6 +84,29 @@ int main(int argc, char *argv[])
 	return 1;
     QString str (QCoreApplication::arguments().at(1)); //pos 0 = prog path
 */
+    if(parser.isSet(proxyOption)){
+	QNetworkProxy proxy;
+	if(parser.isSet(proxySocks5Option)){
+	    proxy.setType(QNetworkProxy::Socks5Proxy);
+	} else {
+	    proxy.setType(QNetworkProxy::HttpProxy);
+	}
+
+	proxy.setHostName(parser.value(proxyOption));
+
+	if(parser.isSet(proxyPortOption)){
+	    proxy.setPort(parser.value(proxyPortOption).toInt());
+	}
+	if(parser.isSet(proxyUserOption)){
+	    proxy.setUser(parser.value(proxyUserOption));
+	}
+	if(parser.isSet(proxyPassOption)){
+	    proxy.setPassword(parser.value(proxyPassOption));
+	}
+	QNetworkProxy::setApplicationProxy(proxy);
+    }
+
+
     MainWindow *mw = new MainWindow(QUrl(str),&pwd);
 //    mw->setUAString(QString("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"));
 //    mw->setUAString(QString("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 OPR/91.0.4516.77"));
