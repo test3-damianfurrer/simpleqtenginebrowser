@@ -21,7 +21,7 @@ void test(){
 
 int main(int argc, char *argv[])
 {
-    QString pwd=QString(get_current_dir_name());
+    QString pwd=QString(get_current_dir_name())+QString("/.qtw");
 
     QCoreApplication::setOrganizationName("QtNoobs");
     QCoreApplication::setApplicationName("Qtw-Browser");
