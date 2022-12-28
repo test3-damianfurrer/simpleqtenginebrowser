@@ -79,8 +79,13 @@ void WebEngineView::ExitAction(){
     QCoreApplication::exit(0);
 }
 void WebEngineView::showContextMenu(const QPoint &pos){
-    if(linkurl == "")
-	return;
+    if(linkurl == ""){
+	if (hasSelection() == false) {
+	  return;
+	} else {
+	  linkurl = selectedText().split("\n").at(0);
+        }
+    }
     QMenu *contextMenu = new QMenu();
     QAction *return_link = new QAction(tr("Return Link"));
     QAction *sysopen_link = new QAction(tr("Sys Open Link"));
