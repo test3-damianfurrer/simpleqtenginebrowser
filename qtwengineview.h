@@ -16,6 +16,7 @@ public:
     void setAllPaths(QString);
     ~WebEngineView();
 protected:
+    void dlReq(QWebEngineDownloadItem* download);
     void updateLink(const QUrl &url);
     void detectedLink(QString link);
     void showContextMenu(const QPoint &pos);

@@ -45,7 +45,16 @@ WebEngineView::WebEngineView(QString *pwd, bool js, bool scrollbar, QWidget *par
     connect(this, &WebEngineView::urlChanged, this, &WebEngineView::updateLink);
     connect(page(), &QWebEnginePage::linkHovered, this, &WebEngineView::detectedLink);
     connect(page(), &QWebEnginePage::fullScreenRequested, this, &WebEngineView::fullscrnReq);
+//test dl signal
+//QWebEngineProfile::downloadRequested(QWebEngineDownloadItem *download) //dlReq
+    connect(page()->profile(),&QWebEngineProfile::downloadRequested,this, &WebEngineView::dlReq);
 }
+
+//QWebEngineProfile::downloadRequested(QWebEngineDownloadItem *download) //dlReq
+void WebEngineView::dlReq(QWebEngineDownloadItem *download){
+	download->accept(); //accept by default
+}
+
 
 void WebEngineView::setUAString(QString userAgent){
     QWebEngineProfile * prf = page()->profile();
@@ -55,7 +64,8 @@ void WebEngineView::setUAString(QString userAgent){
 void WebEngineView::setAllPaths(QString currpath){
     QWebEngineProfile * prf = page()->profile();
     prf->setCachePath(currpath);
-    prf->setDownloadPath(currpath);
+//    prf->setDownloadPath(currpath+"/download");//+"/Download");
+    prf->setDownloadPath(currpath+"/../download");//+"/Download");
 }
 
 void WebEngineView::fullscrnReq(QWebEngineFullScreenRequest req){
