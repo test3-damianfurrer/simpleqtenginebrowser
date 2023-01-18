@@ -3,13 +3,17 @@
 #include <QMenu>
 #include <QWebEngineProfile>
 #include <QDesktopServices>
+#include <QDropEvent>
+#include "qtwpage.h"
 
 WebEngineView::WebEngineView(QString *pwd, bool js, bool scrollbar, QWidget *parent = Q_NULLPTR)
 {
     exit->setShortcut(Qt::Key_Escape);
     QString profilepath=*pwd;
     profilepath+="/profile";
-    setPage(new QWebEnginePage(new QWebEngineProfile(profilepath)));
+    WebEnginePage* wpx = new WebEnginePage(new QWebEngineProfile(profilepath));
+    setPage(wpx);
+
     settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
 //    settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true); disabled by default, not required (usefull for Pepper Plugin API.)
     settings()->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows, true);
@@ -82,6 +86,9 @@ QString WebEngineView::returnLink(){
 }
 
 void WebEngineView::detectedLink(QString link){
+    WebEnginePage* p = (WebEnginePage*)page(); //maybe also attach to a selection chage event, when there might be a direct navigation added.
+    p->enableNav();
+
     linkurl = link;
 }
 
@@ -89,6 +96,9 @@ void WebEngineView::ExitAction(){
     QCoreApplication::exit(0);
 }
 void WebEngineView::showContextMenu(const QPoint &pos){
+    WebEnginePage* p = (WebEnginePage*)page();
+    p->enableNav();
+
     if(linkurl == ""){
 	if (hasSelection() == false) {
 	  return;
@@ -106,7 +116,26 @@ void WebEngineView::showContextMenu(const QPoint &pos){
     contextMenu->exec(this->mapToGlobal(pos));
 }
 
+/*//from webengineview source code
+void WebEngineView::dropEvent(QDropEvent *e)
+    Q_D(QWebEngineView);
+    if (!d->m_dragEntered)
+        return;
+    e->accept();
+    d->page->d_ptr->adapter->endDragging(e, mapToGlobal(e->position().toPoint()));
+    d->m_dragEntered = false;
+}*/
+
+void WebEngineView::dropEvent(QDropEvent *e){
+
+    WebEnginePage* p = (WebEnginePage*)page();
+    p->disableNav();
+    QWebEngineView::dropEvent(e);
+}
+
 WebEngineView::~WebEngineView()
 {
-  page()->~QWebEnginePage();
+//  page()->~QWebEnginePage();
+  WebEnginePage* p = (WebEnginePage*)page();
+  p->~WebEnginePage();
 }

@@ -11,8 +11,10 @@ INSTALLS += target
 
 SOURCES += qtw.cpp \
     qtwview.cpp \
-    qtwengineview.cpp
+    qtwengineview.cpp \
+    qtwpage.cpp
 
 HEADERS  += \
     qtwview.h \
-    qtwengineview.h
+    qtwengineview.h \
+    qtwpage.h
